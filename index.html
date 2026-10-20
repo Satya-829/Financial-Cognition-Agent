@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fundamental Analysis Copilot — AI-Powered Financial Research</title>
+  <meta name="description"
+    content="Professional AI-powered fundamental analysis tool. Upload financial statements and get institutional-grade ratio analysis, trend insights, scenario simulations, and investment memos." />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect rx='6' width='32' height='32' fill='%23101828'/><path d='M8 24 L12 10 L16 18 L20 8 L24 20' stroke='%2338bdf8' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='24' cy='20' r='2' fill='%23f59e0b'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="src/styles/index.css" />
+</head>
+
+<body>
+
+  <!-- ───── HEADER ───── -->
+  <header id="app-header">
+    <div class="header-left">
+      <div class="logo">
+        <svg viewBox="0 0 32 32" width="28" height="28">
+          <rect rx="6" width="32" height="32" fill="var(--accent-blue)" />
+          <path d="M8 24 L12 10 L16 18 L20 8 L24 20" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <circle cx="24" cy="20" r="2" fill="var(--accent-gold)" />
+        </svg>
+        <h1>FA Copilot</h1>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="server-status-group">
+        <div class="provider-row">
+          <div class="status-item">
+            <span class="status-label">Provider</span>
+            <span class="status-value" id="providerLabel">—</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Model</span>
+            <span class="status-value" id="modelLabel">—</span>
+          </div>
+          <div class="status-item">
+            <span id="apiKeyStatus" class="api-status">Connecting…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ───── MAIN LAYOUT ───── -->
+  <div id="app-layout">
+
+    <!-- ─── SIDEBAR ─── -->
+    <aside id="sidebar">
+      <h2 class="sidebar-title">Analysis Phases</h2>
+      <nav id="phaseNav">
+        <button class="phase-step active" data-phase="0">
+          <span class="step-num">1</span>
+          <span class="step-label">Data Upload</span>
+          <span class="step-status"></span>
+        </button>
+        <button class="phase-step" data-phase="1">
+          <span class="step-num">2</span>
+          <span class="step-label">Data Understanding</span>
+          <span class="step-status"></span>
+        </button>
+        <button class="phase-step" data-phase="2">
+          <span class="step-num">3</span>
+          <span class="step-label">Ratio Engine</span>
+          <span class="step-status"></span>
+        </button>
+        <button class="phase-step" data-phase="3">
+          <span class="step-num">4</span>
+          <span class="step-label">Trend Analysis</span>
+          <span class="step-status"></span>
+        </button>
+        <button class="phase-step" data-phase="4">
+          <span class="step-num">5</span>
+          <span class="step-label">Analyst Interpretation</span>
+          <span class="step-status"></span>
+        </button>
+        <button class="phase-step" data-phase="5">
+          <span class="step-num">6</span>
+          <span class="step-label">Scenario Simulation</span>
+          <span class="step-status"></span>
+        </button>
+        <button class="phase-step" data-phase="6">
+          <span class="step-num">7</span>
+          <span class="step-label">Investment Memo</span>
+          <span class="step-status"></span>
+        </button>
+        <button class="phase-step" data-phase="7">
+          <span class="step-num">⟳</span>
+          <span class="step-label">Deep Dive</span>
+          <span class="step-status"></span>
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="resetBtn" class="btn btn-ghost btn-sm">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10" />
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+          </svg>
+          Reset Analysis
+        </button>
+      </div>
+    </aside>
+
+    <!-- ─── MAIN CONTENT ─── -->
+    <main id="mainContent">
+
+      <!-- PHASE 0: Upload -->
+      <section class="phase-panel active" data-panel="0" id="panelUpload">
+        <div class="panel-header">
+          <h2>Upload Financial Statements</h2>
+          <p class="panel-subtitle">Drop a CSV or Excel file containing Income Statement, Balance Sheet, or Cash Flow
+            data.</p>
+        </div>
+        <div class="upload-zone" id="uploadZone">
+          <div class="upload-icon">
+            <svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="var(--accent-blue)" stroke-width="2">
+              <path d="M28 4H12a4 4 0 0 0-4 4v32a4 4 0 0 0 4 4h24a4 4 0 0 0 4-4V16Z" />
+              <polyline points="28 4 28 16 40 16" />
+              <line x1="24" y1="26" x2="24" y2="38" />
+              <polyline points="18 32 24 26 30 32" />
+            </svg>
+          </div>
+          <p class="upload-text">Drag & drop your file here</p>
+          <p class="upload-hint">or click to browse — .csv, .xlsx, .xls supported</p>
+          <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" hidden />
+        </div>
+        <div class="upload-preview" id="uploadPreview" hidden>
+          <div class="preview-header">
+            <span class="file-badge" id="fileName"></span>
+            <button id="removeFile" class="btn btn-ghost btn-sm">Remove</button>
+          </div>
+          <div class="preview-table-wrap" id="previewTableWrap"></div>
+          <button id="startAnalysis" class="btn btn-primary btn-lg">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+            Run Analysis
+          </button>
+        </div>
+      </section>
+
+      <!-- PHASE 1–7: Dynamic content rendered by JS -->
+      <section class="phase-panel" data-panel="1" id="panelPhase1">
+        <div class="panel-header">
+          <h2>Phase 1 — Data Understanding</h2>
+        </div>
+        <div class="phase-content" id="phase1Content">
+          <div class="loading-skeleton"></div>
+        </div>
+      </section>
+      <section class="phase-panel" data-panel="2" id="panelPhase2">
+        <div class="panel-header">
+          <h2>Phase 2 — Ratio Engine</h2>
+        </div>
+        <div class="phase-content" id="phase2Content">
+          <div class="loading-skeleton"></div>
+        </div>
+      </section>
+      <section class="phase-panel" data-panel="3" id="panelPhase3">
+        <div class="panel-header">
+          <h2>Phase 3 — Trend Analysis</h2>
+        </div>
+        <div class="phase-content" id="phase3Content">
+          <div class="loading-skeleton"></div>
+        </div>
+      </section>
+      <section class="phase-panel" data-panel="4" id="panelPhase4">
+        <div class="panel-header">
+          <h2>Phase 4 — Analyst Interpretation</h2>
+        </div>
+        <div class="phase-content" id="phase4Content">
+          <div class="loading-skeleton"></div>
+        </div>
+      </section>
+      <section class="phase-panel" data-panel="5" id="panelPhase5">
+        <div class="panel-header">
+          <h2>Phase 5 — Scenario Simulation</h2>
+        </div>
+        <div class="phase-content" id="phase5Content">
+          <div class="scenario-form" id="scenarioForm" hidden>
+            <p class="form-intro">Enter your assumptions to generate a 3-year forward projection.</p>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="scenRevGrowth">Revenue Growth %</label>
+                <input type="number" id="scenRevGrowth" value="10" step="0.5" />
+              </div>
+              <div class="form-field">
+                <label for="scenOpMargin">Operating Margin %</label>
+                <input type="number" id="scenOpMargin" value="15" step="0.5" />
+              </div>
+              <div class="form-field">
+                <label for="scenCapex">Capex % of Revenue</label>
+                <input type="number" id="scenCapex" value="5" step="0.5" />
+              </div>
+              <div class="form-field">
+                <label for="scenTaxRate">Tax Rate %</label>
+                <input type="number" id="scenTaxRate" value="25" step="0.5" />
+              </div>
+              <div class="form-field">
+                <label for="scenWACC">WACC %</label>
+                <input type="number" id="scenWACC" value="10" step="0.5" />
+              </div>
+            </div>
+            <button id="runScenario" class="btn btn-primary">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+              Run Projection
+            </button>
+          </div>
+          <div id="scenarioResult"></div>
+        </div>
+      </section>
+      <section class="phase-panel" data-panel="6" id="panelPhase6">
+        <div class="panel-header">
+          <h2>Phase 6 — Investment Memo</h2>
+        </div>
+        <div class="phase-content" id="phase6Content">
+          <div class="loading-skeleton"></div>
+        </div>
+      </section>
+      <section class="phase-panel" data-panel="7" id="panelPhase7">
+        <div class="panel-header">
+          <h2>Deep Dive — Follow-up</h2>
+        </div>
+        <div class="phase-content" id="phase7Content">
+          <div class="chat-area" id="chatArea"></div>
+          <div class="chat-input-wrap">
+            <input type="text" id="chatInput" placeholder="Ask about valuation, industry context, macro impact…" />
+            <button id="chatSend" class="btn btn-accent btn-sm">Send</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ───── TOAST ───── -->
+  <div id="toastContainer"></div>
+
+  <!-- ───── CDN Libraries ───── -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+
+  <!-- ───── App Modules ───── -->
+  <script src="src/prompt.js?v=2"></script>
+  <script src="src/parser.js?v=2"></script>
+  <script src="src/gemini.js?v=2"></script>
+  <script src="src/phases.js?v=2"></script>
+  <script src="src/main.js?v=2"></script>
+</body>
+
+</html>
